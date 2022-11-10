@@ -3,23 +3,12 @@
  */
 package org.yash.yashtalks.entity;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
+import java.util.*;
+import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
@@ -28,7 +17,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User implements UserDetails {
 	
 	@Id
@@ -56,49 +50,34 @@ public class User implements UserDetails {
 	
 	@Column(name = "enabled")
 	private boolean enabled = true;
-	
+	private Integer followerCount;
+	private Integer followingCount;
+	private Boolean accountVerified;
+	private Boolean emailVerified;
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date birthDate;
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date joinDate;
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date dateLastModified;
+
+	@JsonIgnore
+	@ManyToMany
+	@JoinTable(name = "follow_users", joinColumns = @JoinColumn(name = "followed_id"),
+	inverseJoinColumns = @JoinColumn(name = "follower_id"))
+	private List<User> followerUsers = new ArrayList<>();
+
+	@JsonIgnore
+	@ManyToMany(mappedBy = "followerUsers")
+	private List<User> followingUsers = new ArrayList<>();
+
 	//User can have many roles
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
 	@JsonIgnore
 	private Set<UserRole> userRoles = new HashSet<UserRole>();
-
-	/**
-	 * 
-	 */
-	public User() {
-		// TODO Auto-generated constructor stub
-	}
-	
-	
-
-	
-	/**
-	 * @param id
-	 * @param username
-	 * @param password
-	 * @param firstName
-	 * @param lastName
-	 * @param mobile
-	 * @param profile
-	 * @param enabled
-	 * @param userRoles
-	 */
-	public User(int id, String username, String password, String firstName, String lastName, String mobile,
-			String profile, boolean enabled, Set<UserRole> userRoles) {
-		super();
-		this.id = id;
-		this.username = username;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.mobile = mobile;
-		this.profile = profile;
-		this.enabled = enabled;
-		this.userRoles = userRoles;
-	}
-
-
-
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -112,7 +91,6 @@ public class User implements UserDetails {
 		
 		return set;
 	}
-
 	
 	@Override
 	public String getUsername() {
@@ -120,13 +98,11 @@ public class User implements UserDetails {
 		return username;
 	}
 
-
 	@Override
 	public boolean isAccountNonExpired() {
 		// TODO Auto-generated method stub
 		return true;
 	}
-
 
 	@Override
 	public boolean isAccountNonLocked() {
@@ -134,13 +110,11 @@ public class User implements UserDetails {
 		return true;
 	}
 
-
 	@Override
 	public boolean isCredentialsNonExpired() {
 		// TODO Auto-generated method stub
 		return true;
 	}
-
  
 	@Override
 	public boolean isEnabled() {
@@ -155,20 +129,12 @@ public class User implements UserDetails {
 		return id;
 	}
 
-
-
-
-
 	/**
 	 * @param id the id to set
 	 */
 	public void setId(int id) {
 		this.id = id;
 	}
-
-
-
-
 
 	/**
 	 * @return the firstName
@@ -177,20 +143,12 @@ public class User implements UserDetails {
 		return firstName;
 	}
 
-
-
-
-
 	/**
 	 * @param firstName the firstName to set
 	 */
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-
-
-
-
 
 	/**
 	 * @return the lastName
@@ -199,18 +157,12 @@ public class User implements UserDetails {
 		return lastName;
 	}
 
-
-
-
-
 	/**
 	 * @param lastName the lastName to set
 	 */
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-
-
 
 	/**
 	 * @return the profile
@@ -219,16 +171,12 @@ public class User implements UserDetails {
 		return profile;
 	}
 
-
-
 	/**
 	 * @param profile the profile to set
 	 */
 	public void setProfile(String profile) {
 		this.profile = profile;
 	}
-
-
 
 	/**
 	 * @param username the username to set
@@ -237,16 +185,12 @@ public class User implements UserDetails {
 		this.username = username;
 	}
 
-
-
 	/**
 	 * @param enabled the enabled to set
 	 */
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
-
-
 
 	/**
 	 * @return the password
@@ -255,20 +199,12 @@ public class User implements UserDetails {
 		return password;
 	}
 
-
-
-
-
 	/**
 	 * @param password the password to set
 	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-
-
-
 
 	/**
 	 * @return the mobile
@@ -277,20 +213,12 @@ public class User implements UserDetails {
 		return mobile;
 	}
 
-
-
-
-
 	/**
 	 * @param mobile the mobile to set
 	 */
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
-
-
-
-
 
 	/**
 	 * @return the userRoles
@@ -299,20 +227,12 @@ public class User implements UserDetails {
 		return userRoles;
 	}
 
-
-
-
-
 	/**
 	 * @param userRoles the userRoles to set
 	 */
 	public void setUserRoles(Set<UserRole> userRoles) {
 		this.userRoles = userRoles;
 	}
-
-
-
-
 
 	@Override
 	public String toString() {
@@ -321,5 +241,17 @@ public class User implements UserDetails {
 	}
 
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		User user = (User) o;
+		return Objects.equals(id, user.id) && Objects.equals(username, user.username);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, username);
+	}
 	
 }
