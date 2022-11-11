@@ -5,6 +5,8 @@ package org.yash.yashtalks.controller;
 
 import java.util.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -32,12 +34,11 @@ import org.yash.yashtalks.service.UserService;
 @RequestMapping("/user")
 public class UserController {
 
+	Logger logger = LoggerFactory.getLogger(UserController.class);
+
 	@Autowired
 	UserService service;
 
-	/**
-	 * 
-	 */
 	public UserController() {
 		// TODO Auto-generated constructor stub
 	}
@@ -54,7 +55,7 @@ public class UserController {
 	public Optional<User> createUser(@Validated @RequestBody User user) throws Exception {
 		User newUser = new User();
 		newUser.setUsername(user.getUsername());
-		System.out.println("INPUT-> "+user.getUsername());
+		logger.info(user.getUsername());
 //		newUser.setPassword(passwordEncoder.encode(signupDto.getPassword()));
 		newUser.setPassword(user.getPassword());
 		newUser.setFirstName(user.getFirstName());
@@ -75,7 +76,6 @@ public class UserController {
 		UserRole userRole2 = new UserRole();
 		userRole2.setRole(role);
 		userRole2.setUser(newUser);
-
 		userRole1.add(userRole2);
 
 		newUser.setUserRoles(userRole1);
@@ -88,7 +88,8 @@ public class UserController {
 	@GetMapping("/get-user/{id}")
 	public ResponseEntity<User> getUserById(@PathVariable int id) {
 		// Returning value for getting User by id
-		return service.getUserById(id);
+		User user = service.getUserById(id);
+		return ResponseEntity.ok(user);
 	}
 
 	// REST api update user by id
@@ -99,17 +100,19 @@ public class UserController {
 	}
 
 	// REST api delete user by id
-	@DeleteMapping("/deleteuser/{id}")
+	@DeleteMapping("/delete-user/{id}")
 	public ResponseEntity<Map<String, String>> deleteUserById(@PathVariable int id) {
 		// Returning value for Deleting User by id
 		return service.deleteUserById(id);
 	}
 	
 	// REST api delete all user record
-	@DeleteMapping("/deleterecord")
+	@DeleteMapping("/delete-record")
 	public Map<String, String> deleteUserRecord() {
 		// Returning value for Deleting User by id
 		return service.deleteAllUser();
 	}
+
+
 
 }

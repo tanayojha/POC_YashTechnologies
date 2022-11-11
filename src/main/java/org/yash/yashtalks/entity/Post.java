@@ -4,6 +4,8 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import java.util.Objects;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,7 +29,6 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 4096)
     private String content;
     private String postPhoto;
     private Integer likeCount;
@@ -37,25 +38,23 @@ public class Post {
     @Column(nullable = false)
     private Boolean isTypeShare;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @CreationTimestamp
     private Date dateCreated;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @UpdateTimestamp
     private Date dateLastModified;
 
     @ManyToOne
     @JoinColumn(name = "author_id")
     private User author;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "post")
     private List<Comment> postComments = new ArrayList<>();
 
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(name = "post_likes", joinColumns = @JoinColumn(name = "post_id"),
-    inverseJoinColumns = @JoinColumn(name = "liker_id"))
-    private List<User> likeList = new ArrayList<>();
+//    @ManyToMany
+//    @JoinTable(name = "post_likes", joinColumns = @JoinColumn(name = "post_id"),
+//            inverseJoinColumns = @JoinColumn(name = "liker_id"))
+//    private List<User> likeList = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "shared_post_id")
@@ -65,10 +64,6 @@ public class Post {
     @OneToMany(mappedBy = "sharedPost")
     private List<Post> shareList = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "post_tags", joinColumns = @JoinColumn(name = "post_id"),
-    inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private List<Tag> postTags = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

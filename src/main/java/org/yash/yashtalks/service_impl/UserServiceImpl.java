@@ -11,9 +11,10 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.yash.yashtalks.dao.RoleRepository;
-import org.yash.yashtalks.dao.UserRepository;
+import org.yash.yashtalks.repositories.RoleRepository;
+import org.yash.yashtalks.repositories.UserRepository;
 import org.yash.yashtalks.entity.User;
 import org.yash.yashtalks.entity.UserRole;
 import org.yash.yashtalks.exception.UserNotFoundException;
@@ -37,6 +38,20 @@ public class UserServiceImpl implements UserService {
 	public UserServiceImpl() {
 		// TODO Auto-generated constructor stub
 	}
+
+	@Override
+	public User getUserByEmail(String email) {
+		User user = userRepository.findByUsername(email);
+		return user;
+	}
+
+	public User getAuthenticatedUser() {
+		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		System.out.println(user+"...email.."+user.getUsername());
+		return getUserByEmail(user.getUsername());
+	}
+
+
 
 	@Override
 	public Optional<User> insertUser(User user, Set<UserRole> userRole) throws Exception {
@@ -75,7 +90,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public ResponseEntity<User> getUserById(int id) {
+	public User getUserById(int id) {
 		/*
 		 * Checking If User Exist in database
 		 */
@@ -85,7 +100,8 @@ public class UserServiceImpl implements UserService {
 		// Loggers
 		System.out.println("GETTING USER BY ID ->" + users);
 		// Returning value for Get User by id
-		return ResponseEntity.ok(users);
+
+		return users;
 	}
 
 	@Override

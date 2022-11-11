@@ -7,17 +7,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
-public class UserNotFoundException extends RuntimeException {
+public class PostNotFoundException extends RuntimeException {
 
 	/**
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	public UserNotFoundException(String msg) {
+
+	public PostNotFoundException(String msg) {
 		super(msg);
 	}
 
-	public UserNotFoundException(String message, Throwable cause) {
+	public PostNotFoundException(String message, Throwable cause) {
 		super(message, cause);
 	}
 

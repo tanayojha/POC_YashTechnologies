@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.yash.yashtalks.dao.UserRepository;
+import org.yash.yashtalks.repositories.UserRepository;
 import org.yash.yashtalks.entity.User;
 
 /**
@@ -17,7 +17,6 @@ import org.yash.yashtalks.entity.User;
  */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-	
 
 	@Autowired
 	private UserRepository userRepository;

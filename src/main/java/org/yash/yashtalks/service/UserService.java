@@ -30,9 +30,15 @@ public interface UserService {
 	public ResponseEntity<Map<String, String>> deleteUserById(int id);
 
 	// Get a User record on basis of Id
-	public ResponseEntity<User> getUserById(int id);
+	//public ResponseEntity<User> getUserById(int id);
+
+	public User getUserById(int author_id);
 
 	// Delete All User record
 	public Map<String, String> deleteAllUser();
-	
+
+	public User getAuthenticatedUser();
+
+	User getUserByEmail(String email);
+
 }
