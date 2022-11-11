@@ -32,11 +32,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			System.err.println("user not found");
 			throw new UsernameNotFoundException("No User Found !!");
 		}
+
+		boolean enabled = user.getAccountVerified();
 		
 		return user;
 	}
-	
-	
-	
 
 }

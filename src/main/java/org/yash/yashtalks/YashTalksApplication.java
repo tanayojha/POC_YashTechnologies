@@ -33,7 +33,7 @@ public class YashTalksApplication implements CommandLineRunner {
 //		user.setLastName("admin");
 //		user.setUsername("admin@yash.com");
 //		user.setPassword("admin");
-//
+
 //		// Admin role
 //		Role role1 = new Role();
 //		role1.setRoleId(1);

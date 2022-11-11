@@ -3,11 +3,7 @@
  */
 package org.yash.yashtalks.controller;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -56,31 +52,47 @@ public class UserController {
 	// REST api for Create User
 	@PostMapping("/signup")
 	public Optional<User> createUser(@Validated @RequestBody User user) throws Exception {
-		
+		User newUser = new User();
+		newUser.setUsername(user.getUsername());
+		System.out.println("INPUT-> "+user.getUsername());
+//		newUser.setPassword(passwordEncoder.encode(signupDto.getPassword()));
+		newUser.setPassword(user.getPassword());
+		newUser.setFirstName(user.getFirstName());
+		newUser.setLastName(user.getLastName());
+		newUser.setFollowerCount(0);
+		newUser.setFollowingCount(0);
+		newUser.setEnabled(true);
+		newUser.setAccountVerified(false);
+		newUser.setEmailVerified(false);
+		newUser.setJoinDate(new Date());
+		newUser.setDateLastModified(new Date());
+		//Roles
 		Set<UserRole> userRole1 = new HashSet<>();
 		Role role = new Role();
 		role.setRoleId(2);
-		role.setRoleName("NORMAL"); 
-		
+		role.setRoleName("NORMAL");
+
 		UserRole userRole2 = new UserRole();
 		userRole2.setRole(role);
-		userRole2.setUser(user);
-		
+		userRole2.setUser(newUser);
+
 		userRole1.add(userRole2);
-		
+
+		newUser.setUserRoles(userRole1);
+
 		// Returning value for inserted User
-		return service.insertUser(user, userRole1);
+		return service.insertUser(newUser, userRole1);
 	}
 
 	// REST api get User by id
-	@GetMapping("/getuser/{id}")
+	@GetMapping("/get-user/{id}")
 	public ResponseEntity<User> getUserById(@PathVariable int id) {
 		// Returning value for getting User by id
 		return service.getUserById(id);
 	}
 
 	// REST api update user by id
-	@PutMapping("/updateuser/{id}")
+	@PutMapping("/update-user/{id}")
 	public ResponseEntity<User> updateUserById(@PathVariable int id, @Validated @RequestBody User user) {
 		// Returning value for Updating User by id
 		return service.updateUserById(id, user);

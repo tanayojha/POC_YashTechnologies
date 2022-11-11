@@ -65,13 +65,13 @@ public class User implements UserDetails {
 	private Date dateLastModified;
 
 	@JsonIgnore
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "follow_users", joinColumns = @JoinColumn(name = "followed_id"),
 	inverseJoinColumns = @JoinColumn(name = "follower_id"))
 	private List<User> followerUsers = new ArrayList<>();
 
 	@JsonIgnore
-	@ManyToMany(mappedBy = "followerUsers")
+	@ManyToMany(cascade = CascadeType.ALL,mappedBy = "followerUsers")
 	private List<User> followingUsers = new ArrayList<>();
 
 	//User can have many roles
@@ -241,17 +241,17 @@ public class User implements UserDetails {
 	}
 
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		User user = (User) o;
-		return Objects.equals(id, user.id) && Objects.equals(username, user.username);
-	}
+//	@Override
+//	public boolean equals(Object o) {
+//		if (this == o) return true;
+//		if (o == null || getClass() != o.getClass()) return false;
+//		User user = (User) o;
+//		return Objects.equals(id, user.id) && Objects.equals(username, user.username);
+//	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, username);
-	}
-	
+//	@Override
+//	public int hashCode() {
+//		return Objects.hash(id, username);
+//	}
+//
 }

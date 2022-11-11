@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
 			
 			
 			// Loggers
-			System.out.println("INSERTED USER ->" + Optional.of(userRepository.save(user)));
+			//System.out.println("INSERTED USER ->" + Optional.of(userRepository.save(user)));
 			// Returning value for inserted User
 			return Optional.of(userRepository.save(user));	
 		}
