@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.yash.yashtalks.config.JWTUtils;
 import org.yash.yashtalks.entity.JWTRequest;
@@ -47,7 +46,6 @@ public class AuthenticationController {
 	public ResponseEntity<?> generateToken(@RequestBody JWTRequest JwtRequest) throws Exception {
 		try {
 			authenticate(JwtRequest.getUsername(), JwtRequest.getPassword());
-
 		} catch (UserNotFoundException e) {
 			e.printStackTrace();
 			throw new Exception("user not found");

@@ -3,6 +3,9 @@ package org.yash.yashtalks.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,28 +29,29 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(length = 1024)
     private String content;
     private Integer likeCount;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @CreationTimestamp
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date dateCreated;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @UpdateTimestamp
     private Date dateLastModified;
 
     @OneToOne
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
+
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
-    @JsonIgnore
     @ManyToMany
+    @JsonIgnore
     @JoinTable(name = "comment_likes", joinColumns = @JoinColumn(name = "comment_id"),
     inverseJoinColumns = @JoinColumn(name = "liker_id"))
     private List<User> likeList = new ArrayList<>();

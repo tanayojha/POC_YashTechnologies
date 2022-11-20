@@ -69,7 +69,6 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 		// TODO Auto-generated method stub
 		
 		http
-		     
 		       .csrf()
 		       .disable()
 		       .cors()
