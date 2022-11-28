@@ -1,28 +1,13 @@
 package org.yash.yashtalks;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.yash.yashtalks.entity.Role;
-import org.yash.yashtalks.entity.User;
-import org.yash.yashtalks.entity.UserRole;
-import org.yash.yashtalks.property.FileStorageProperties;
 import org.yash.yashtalks.service.UserService;
 @Configuration
 @SpringBootApplication
-//@EnableJpaRepositories(basePackages = "org.yash.yashtalks.repositories.*")
-@EnableConfigurationProperties({
-		FileStorageProperties.class
-})
 public class YashTalksApplication implements CommandLineRunner {
 
 	@Autowired

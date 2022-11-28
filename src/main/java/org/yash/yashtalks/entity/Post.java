@@ -28,10 +28,14 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String content;
-    private String postPhoto;
+
+    @Lob
+    @Column(name = "post_photo", length = 5000)
+    private byte[] postPhoto;
+
     private Integer likeCount;
+    private Boolean isLiked;
     private Integer commentCount;
     private Integer shareCount;
 
@@ -51,10 +55,10 @@ public class Post {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "post")
     private List<Comment> postComments = new ArrayList<>();
 
-//    @ManyToMany
-//    @JoinTable(name = "post_likes", joinColumns = @JoinColumn(name = "post_id"),
-//            inverseJoinColumns = @JoinColumn(name = "liker_id"))
-//    private List<User> likeList = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(name = "post_likes", joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "liker_id"))
+    private List<User> likeList = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "shared_post_id")

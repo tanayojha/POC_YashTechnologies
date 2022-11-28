@@ -8,20 +8,15 @@ import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.yash.yashtalks.entity.FollowUser;
 import org.yash.yashtalks.entity.Role;
 import org.yash.yashtalks.entity.User;
 import org.yash.yashtalks.entity.UserRole;
+import org.yash.yashtalks.payload.BaseResponse;
 import org.yash.yashtalks.service.UserService;
 
 /**
@@ -45,9 +40,16 @@ public class UserController {
 
 	// REST api for get all users list
 	@GetMapping("/getalluser")
-	public Optional<List<User>> getUserList() {
+	public BaseResponse getUserList() {
 		// Returning value for User list
 		return service.getUserList();
+	}
+
+
+
+	@GetMapping("/getList")
+	public BaseResponse getList(){
+		return service.getList();
 	}
 
 	// REST api for Create User
@@ -62,7 +64,7 @@ public class UserController {
 		newUser.setLastName(user.getLastName());
 		newUser.setFollowerCount(0);
 		newUser.setFollowingCount(0);
-		newUser.setEnabled(true);
+		newUser.setFollowing(false);
 		newUser.setAccountVerified(false);
 		newUser.setEmailVerified(false);
 		newUser.setJoinDate(new Date());
@@ -85,7 +87,7 @@ public class UserController {
 	}
 
 	// REST api get User by id
-	@GetMapping("/get-user/{id}")
+	@GetMapping("/getuser/{id}")
 	public ResponseEntity<User> getUserById(@PathVariable int id) {
 		// Returning value for getting User by id
 		User user = service.getUserById(id);
@@ -93,26 +95,48 @@ public class UserController {
 	}
 
 	// REST api update user by id
-	@PutMapping("/update-user/{id}")
-	public ResponseEntity<User> updateUserById(@PathVariable int id, @Validated @RequestBody User user) {
+	@PutMapping("/updateuser/{id}")
+	public ResponseEntity<User> updateUserById(@PathVariable int id, @RequestBody User user) {
 		// Returning value for Updating User by id
-		return service.updateUserById(id, user);
+		User updateduser = service.updateUserById(id, user);
+		logger.info("updateduser",updateduser);
+		return ResponseEntity.ok(updateduser);
 	}
 
 	// REST api delete user by id
-	@DeleteMapping("/delete-user/{id}")
+	@DeleteMapping("/deleteuser/{id}")
 	public ResponseEntity<Map<String, String>> deleteUserById(@PathVariable int id) {
 		// Returning value for Deleting User by id
 		return service.deleteUserById(id);
 	}
 	
 	// REST api delete all user record
-	@DeleteMapping("/delete-record")
+	@DeleteMapping("/deleterecord")
 	public Map<String, String> deleteUserRecord() {
 		// Returning value for Deleting User by id
 		return service.deleteAllUser();
 	}
 
 
+
+	@GetMapping("/getfollowinguserid/{id}")
+	public ResponseEntity<?> getFollowingUserById(@PathVariable("id") int userId) {
+		List<Integer> list = service.getfollowingUserById(userId);
+		return ResponseEntity.ok(list);
+	}
+
+	//REST api for unfollow to the following user
+	@PostMapping("/unfollow/{id}")
+	public ResponseEntity<?> unfollowUser(@PathVariable("id") int userId) {
+		service.unfollowUser(userId);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	//REST api for follow user
+	@PostMapping("/follow/{id}")
+	public ResponseEntity<?> followUser(@PathVariable("id") int userId) {
+		service.followUser(userId);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 
 }

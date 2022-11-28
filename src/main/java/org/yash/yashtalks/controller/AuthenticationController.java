@@ -4,6 +4,9 @@
 package org.yash.yashtalks.controller;
 
 import java.security.Principal;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,6 +35,8 @@ import org.yash.yashtalks.service_impl.UserDetailsServiceImpl;
 @CrossOrigin("*")
 public class AuthenticationController {
 
+	private static final Logger logger = LoggerFactory.getLogger(PostController.class);
+
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
@@ -51,9 +56,10 @@ public class AuthenticationController {
 			throw new Exception("user not found");
 		}
 		UserDetails userDetails = this.userDetailsServiceImpl.loadUserByUsername(JwtRequest.getUsername());
+		logger.info("userDetails",userDetails);
 		String token = this.jwtUtils.generateToken(userDetails);
+		logger.info("token",token);
 		return ResponseEntity.ok(new JWTResponse(token));
-
 	}
 
 	// For Authentication
@@ -70,6 +76,7 @@ public class AuthenticationController {
 	// return details of current user (login API)
 	@GetMapping("/current-user")
 	public User getCurrentUser(Principal principal) {
+		logger.info("Principal",principal.getName());
 		return ((User) this.userDetailsServiceImpl.loadUserByUsername(principal.getName()));
 	}
 

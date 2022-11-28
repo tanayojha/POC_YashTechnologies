@@ -51,11 +51,13 @@ public class User implements UserDetails {
 	private String profile;
 	
 	@Column(name = "enabled")
-	private boolean enabled = true;
+	private boolean enable;
+	private boolean following;
 	private Integer followerCount;
 	private Integer followingCount;
 	private Boolean accountVerified;
 	private Boolean emailVerified;
+	Integer follow_status = 0;
 
 	//@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	@CreationTimestamp
@@ -120,12 +122,14 @@ public class User implements UserDetails {
 		// TODO Auto-generated method stub
 		return true;
 	}
- 
+
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
 		return true;
 	}
+
+
+
 	
 	/**
 	 * @return the id
@@ -190,12 +194,6 @@ public class User implements UserDetails {
 		this.username = username;
 	}
 
-	/**
-	 * @param enabled the enabled to set
-	 */
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
 
 	/**
 	 * @return the password
@@ -246,17 +244,4 @@ public class User implements UserDetails {
 	}
 
 
-//	@Override
-//	public boolean equals(Object o) {
-//		if (this == o) return true;
-//		if (o == null || getClass() != o.getClass()) return false;
-//		User user = (User) o;
-//		return Objects.equals(id, user.id) && Objects.equals(username, user.username);
-//	}
-
-//	@Override
-//	public int hashCode() {
-//		return Objects.hash(id, username);
-//	}
-//
 }
