@@ -3,12 +3,17 @@
  */
 package org.yash.yashtalks.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
 /**
  * @author tanay.ojha
  *
  */
+
+
+@NoArgsConstructor
 public class Authority implements GrantedAuthority{
 	
 	private String authority; 

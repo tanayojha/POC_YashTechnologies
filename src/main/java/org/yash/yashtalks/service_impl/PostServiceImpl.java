@@ -128,7 +128,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<CommentResponse> getPostCommentsPaginate(Post post) {
+    public List<CommentResponse> getPostComments(Post post) {
         User authUser = userService.getAuthenticatedUser();
         List<Comment> foundCommentList = commentRepository.findByPost(post);
         logger.info("foundCommentList",foundCommentList);

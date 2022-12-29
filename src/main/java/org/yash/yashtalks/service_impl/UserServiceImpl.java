@@ -223,12 +223,12 @@ public class UserServiceImpl implements UserService {
 				authUser.getFollowingUsers().add(userToFollow);
 				authUser.setFollowingCount(authUser.getFollowingCount() + 1);
 				userToFollow.getFollowerUsers().add(authUser);
-				authUser.setFollowing(true);
+				//authUser.setFollowing(true);
 				userToFollow.setFollowing(true);
 				userToFollow.setFollowerCount(userToFollow.getFollowerCount() + 1);
 				logger.info("userToFollow", userToFollow);
 				logger.info("authUser", authUser);
-				userRepository.save(userToFollow);
+				//userRepository.save(userToFollow);
 				userRepository.save(authUser);
 			}
 		} else {

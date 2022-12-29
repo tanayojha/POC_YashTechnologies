@@ -35,7 +35,7 @@ public interface PostService {
 
     //void deleteComment(Long commentId);
 
-    List<CommentResponse> getPostCommentsPaginate(Post post);
+    List<CommentResponse> getPostComments(Post post);
 
     //List<Comment> getPostCommentsPaginate(Post post, Integer page, Integer size);
 

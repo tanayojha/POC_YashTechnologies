@@ -96,7 +96,7 @@ public class UserController {
 
 	// REST api update user by id
 	@PutMapping("/updateuser/{id}")
-	public ResponseEntity<User> updateUserById(@PathVariable int id, @RequestBody User user) {
+	public ResponseEntity<User> updateUserById(@PathVariable("id") int id, @RequestBody User user) {
 		// Returning value for Updating User by id
 		User updateduser = service.updateUserById(id, user);
 		logger.info("updateduser",updateduser);
@@ -116,8 +116,6 @@ public class UserController {
 		// Returning value for Deleting User by id
 		return service.deleteAllUser();
 	}
-
-
 
 	@GetMapping("/getfollowinguserid/{id}")
 	public ResponseEntity<?> getFollowingUserById(@PathVariable("id") int userId) {
